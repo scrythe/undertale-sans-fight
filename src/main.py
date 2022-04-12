@@ -1,4 +1,3 @@
-from turtle import Screen
 import pygame
 from sys import exit
 from Player import Heart
@@ -14,7 +13,7 @@ battle_Box = Battle_Box(SCREEN_RECT)
 FPS = 60
 clock = pygame.time.Clock()
 
-heart = Heart(battle_Box.get_border())
+heart = Heart(battle_Box.get_box(), battle_Box.get_border())
 player = pygame.sprite.GroupSingle()
 player.add(heart)
 
@@ -26,7 +25,11 @@ while True:
             exit()
     keys = pygame.key.get_pressed()
     move(keys, heart)
-
+    # press space to get damage for testing
+    if keys[pygame.K_SPACE] and not heart.dead:
+        heart.take_damage()
+        print(heart.HP)
     battle_Box.draw(SCREEN)
     player.draw(SCREEN)
+    heart.draw_hp(SCREEN)
     pygame.display.update()

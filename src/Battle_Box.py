@@ -11,8 +11,11 @@ class Battle_Box:
         self.BATTLE_BOX_RECT = self.BATTLE_BOX.get_rect(
             center=self.BATTLE_BOX_BORDER_RECT.center)
 
-    def get_border(self):
+    def get_box(self):
         return self.BATTLE_BOX_RECT
+
+    def get_border(self):
+        return self.BATTLE_BOX_BORDER_RECT
 
     def draw(self, screen):
         screen.blit(self.BATTLE_BOX_BORDER, self.BATTLE_BOX_BORDER_RECT)
