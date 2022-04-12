@@ -3,12 +3,12 @@ from functions import scale_image
 
 
 class Heart(pygame.sprite.Sprite):
-    def __init__(self, start_coords, border):
+    def __init__(self, border):
         super().__init__()
         image = pygame.image.load('sprites/spr_heart.png').convert_alpha()
         self.image = scale_image(image, 1.5)
         self.speed = 2
-        self.rect = self.image.get_rect(center=start_coords)
+        self.rect = self.image.get_rect(center=border.center)
         self.border = border
 
     def move_upwards(self):

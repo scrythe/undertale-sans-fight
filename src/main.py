@@ -1,6 +1,8 @@
+from turtle import Screen
 import pygame
 from sys import exit
 from Player import Heart
+from Battle_Box import Battle_Box
 from functions import move
 
 pygame.init()
@@ -8,17 +10,11 @@ TOTAL_WIDTH = 960
 TOTAL_HEIGHT = 720
 SCREEN = pygame.display.set_mode((TOTAL_WIDTH, TOTAL_HEIGHT))
 SCREEN_RECT = SCREEN.get_rect()
-BATTLE_BOX_BORDER = pygame.Surface((250, 250))
-BATTLE_BOX_BORDER.fill("white")
-BATTLE_BOX = pygame.Surface((225, 225))
-BATTLE_BOX_BORDER_RECT = BATTLE_BOX_BORDER.get_rect(
-    midtop=SCREEN_RECT.center)
-BATTLE_BOX_RECT = BATTLE_BOX.get_rect(
-    center=BATTLE_BOX_BORDER_RECT.center)
+battle_Box = Battle_Box(SCREEN_RECT)
 FPS = 60
 clock = pygame.time.Clock()
 
-heart = Heart(BATTLE_BOX_RECT.center, BATTLE_BOX_RECT)
+heart = Heart(battle_Box.get_border())
 player = pygame.sprite.GroupSingle()
 player.add(heart)
 
@@ -31,7 +27,6 @@ while True:
     keys = pygame.key.get_pressed()
     move(keys, heart)
 
-    SCREEN.blit(BATTLE_BOX_BORDER, BATTLE_BOX_BORDER_RECT)
-    SCREEN.blit(BATTLE_BOX, BATTLE_BOX_RECT)
+    battle_Box.draw(SCREEN)
     player.draw(SCREEN)
     pygame.display.update()
