@@ -18,7 +18,7 @@ BATTLE_BOX_RECT = BATTLE_BOX.get_rect(
 FPS = 60
 clock = pygame.time.Clock()
 
-heart = Heart(BATTLE_BOX_RECT.center)
+heart = Heart(BATTLE_BOX_RECT.center, BATTLE_BOX_RECT)
 player = pygame.sprite.GroupSingle()
 player.add(heart)
 
