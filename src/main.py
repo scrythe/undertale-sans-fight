@@ -18,12 +18,15 @@ pygame.init()
 TOTAL_WIDTH = 640
 TOTAL_HEIGHT = 480
 SCREEN = pygame.display.set_mode((TOTAL_WIDTH, TOTAL_HEIGHT))
+FPS = 60
+clock = pygame.time.Clock()
 
 heart = Heart((TOTAL_WIDTH / 2, TOTAL_HEIGHT / 2))
 player = pygame.sprite.GroupSingle()
 player.add(heart)
 
 while True:
+    clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
