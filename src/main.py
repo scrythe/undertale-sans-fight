@@ -1,8 +1,9 @@
 import pygame
 from sys import exit
 from Player import Heart
+from Bone import Bone
 from Battle_Box import Battle_Box
-from functions import move
+from functions import move, collision
 
 pygame.init()
 TOTAL_WIDTH = 960
@@ -16,6 +17,9 @@ clock = pygame.time.Clock()
 heart = Heart(battle_Box.get_box(), battle_Box.get_border())
 player = pygame.sprite.GroupSingle()
 player.add(heart)
+bone = Bone(battle_Box.get_box())
+bones_group = pygame.sprite.Group()
+bones_group.add(bone)
 
 while True:
     clock.tick(FPS)
@@ -23,13 +27,15 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
     keys = pygame.key.get_pressed()
     move(keys, heart)
-    # press space to get damage for testing
-    if keys[pygame.K_SPACE] and not heart.dead:
+
+    if not heart.dead and collision(player.sprite, bones_group):
         heart.take_damage()
-        print(heart.HP)
+
     battle_Box.draw(SCREEN)
     player.draw(SCREEN)
+    bones_group.draw(SCREEN)
     heart.draw_hp(SCREEN)
     pygame.display.update()

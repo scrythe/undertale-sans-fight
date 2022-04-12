@@ -15,3 +15,8 @@ def move(keys, object):
 def scale_image(img, factor):
     size = round(img.get_width() * factor), round(img.get_height() * factor)
     return pygame.transform.scale(img, size)
+
+
+def collision(player, obstacle_group):
+    return pygame.sprite.spritecollide(
+        player, obstacle_group, False, pygame.sprite.collide_mask)

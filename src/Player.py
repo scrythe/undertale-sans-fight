@@ -8,8 +8,10 @@ class Heart(pygame.sprite.Sprite):
         self.border = box
         image = pygame.image.load('sprites/spr_heart.png').convert_alpha()
         self.image = scale_image(image, 1.5)
-        self.speed = 2
         self.rect = self.image.get_rect(center=box.center)
+        self.mask = pygame.mask.from_surface(self.image)
+        self.speed = 2
+
         self.dead = False
         self.create_hp_box(border)
 
