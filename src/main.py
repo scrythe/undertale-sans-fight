@@ -1,18 +1,7 @@
 import pygame
 from sys import exit
 from Player import Heart
-
-
-def move(keys):
-    if keys[pygame.K_w]:
-        heart.move_upwards()
-    if keys[pygame.K_d]:
-        heart.move_right()
-    if keys[pygame.K_s]:
-        heart.move_downwards()
-    if keys[pygame.K_a]:
-        heart.move_left()
-
+from functions import move
 
 pygame.init()
 TOTAL_WIDTH = 960
@@ -40,7 +29,7 @@ while True:
             pygame.quit()
             exit()
     keys = pygame.key.get_pressed()
-    move(keys)
+    move(keys, heart)
 
     SCREEN.blit(BATTLE_BOX_BORDER, BATTLE_BOX_BORDER_RECT)
     SCREEN.blit(BATTLE_BOX, BATTLE_BOX_RECT)
