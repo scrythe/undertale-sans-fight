@@ -1,5 +1,5 @@
 import pygame
-from player import Read_Heart, Blue_Heart
+from player import Player
 from bone import Bone
 from battle_box import Battle_Box
 
@@ -14,10 +14,9 @@ class Game:
             (self.TOTAL_WIDTH, self.TOTAL_HEIGHT))
         self.screen_rect = self.screen.get_rect()
         self.battle_Box = Battle_Box(self.screen_rect)
-        self.heart = Read_Heart(self.battle_Box.get_box(),
-                                self.battle_Box.get_border())
-        self.player = pygame.sprite.GroupSingle()
-        self.player.add(self.heart)
+        self.heart = Player(self.battle_Box.get_box(),
+                            self.battle_Box.get_border())
+        self.player = pygame.sprite.GroupSingle(self.heart)
         self.bone = Bone(self.battle_Box.get_box())
         self.bones_group = pygame.sprite.Group()
         self.bones_group.add(self.bone)
@@ -41,22 +40,33 @@ class Game:
             if event.type == pygame.QUIT:
                 self.done = True
 
+            # if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            #     self.to_blue_heart()
+
     def update(self):
         # check if heart collides with any groups
         # and also other updates like movement
-        self.heart.update()
-        if not self.heart.dead and self.collision():
-            self.heart.take_damage()
+        self.player.sprite.update()
+        if not self.player.sprite.dead and self.collision():
+            self.player.sprite.take_damage()
 
     def draw(self):
         self.battle_Box.draw(self.screen)
         self.player.draw(self.screen)
         self.bones_group.draw(self.screen)
-        self.heart.draw_hp(self.screen)
+        self.player.sprite.draw_hp(self.screen)
 
     def collision(self):
         return pygame.sprite.spritecollide(
             self.player.sprite, self.bones_group, False, pygame.sprite.collide_mask)
+
+    # def to_blue_heart(self):
+    #     self.player.empty()
+    #     self.player.add(self.blue_heart)
+
+    # def to_red_heart(self):
+    #     self.player.empty()
+    #     self.player.add(self.red_heart)
 
 
 if __name__ == '__main__':

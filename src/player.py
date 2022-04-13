@@ -1,32 +1,13 @@
 import pygame
-from utils import scale_image
+from utils import get_heart_img
+from pygame import Rect, Surface
 
 
-class Heart(pygame.sprite.Sprite):
-    def __init__(self, box, border, sprite_file):
-        super().__init__()
+class Heart():
+    def __init__(self, rect: Rect, box: Rect, speed):
+        self.rect = rect
         self.box = box
-        self.border = border
-        image = pygame.image.load(f'sprites/{sprite_file}').convert_alpha()
-        self.image = scale_image(image, 1.5)
-        self.rect = self.image.get_rect(center=box.center)
-        self.mask = pygame.mask.from_surface(self.image)
-        self.speed = 2
-
-        self.dead = False
-        self.create_hp_box(self.border)
-
-    def create_hp_box(self, border):
-        self.MAX_HP = 92
-        self.HP = 92
-        self.max_hp_box = pygame.Surface((112, 30))
-        self.max_hp_box.fill('red')
-        self.hp_box = pygame.Surface((112, 30))
-        self.hp_box.fill('yellow')
-        self.max_hp_box_rect = self.max_hp_box.get_rect(
-            midtop=(border.centerx, border.bottom+15))
-        self.hp_box_rect = self.max_hp_box.get_rect(
-            topleft=self.max_hp_box_rect.topleft)
+        self.speed = speed
 
     def move_right(self):
         self.rect.x += self.speed
@@ -38,19 +19,6 @@ class Heart(pygame.sprite.Sprite):
         if self.box.left > self.rect.left:
             self.rect.left = self.box.left
 
-    def take_damage(self):
-        self.HP -= 1
-        if self.HP <= 0:
-            self.lost()
-        else:
-            hp_percentage = self.HP / self.MAX_HP
-            new_size = (112*hp_percentage, 30)
-            self.hp_box = pygame.transform.scale(self.hp_box, new_size)
-
-    def draw_hp(self, screen):
-        screen.blit(self.max_hp_box, self.max_hp_box_rect)
-        screen.blit(self.hp_box, self.hp_box_rect)
-
     def inputs(self, keys):
         if keys[pygame.K_d]:
             self.move_right()
@@ -61,15 +29,11 @@ class Heart(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         self.inputs(keys)
 
-    def lost(self):
-        self.dead = True
-        print('You died!')
-        self.kill()
 
-
-class Read_Heart(Heart):
-    def __init__(self, box, border):
-        super().__init__(box, border, 'spr_heart.png')
+class Red_Heart(Heart):
+    def __init__(self, rect: Rect, box: Rect, speed):
+        super().__init__(rect, box, speed)
+        self.image = get_heart_img('sprites/spr_heart.png')
 
     def move_upwards(self):
         self.rect.y -= self.speed
@@ -90,8 +54,9 @@ class Read_Heart(Heart):
 
 
 class Blue_Heart(Heart):
-    def __init__(self, box, border):
-        super().__init__(box, border, 'spr_heartblue.png')
+    def __init__(self, rect: Rect, box: Rect, speed):
+        super().__init__(rect, box, speed)
+        self.image = get_heart_img('sprites/spr_heartblue.png')
         self.max_jump_height = self.box.bottom - self.box.centery
         self.jump_height = 0
         self.jumping = False
@@ -129,3 +94,59 @@ class Blue_Heart(Heart):
         super().update()
         if not self.jumping:
             self.fall_downwards()
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self, box: Rect, border: Rect):
+        super().__init__()
+        self.box = box
+        self.border = border
+        self.speed = 2
+
+        self.default_image = get_heart_img('sprites/spr_default_heart.png')
+        self.rect = self.default_image.get_rect(center=box.center)
+        self.mask = pygame.mask.from_surface(self.default_image)
+
+        self.create_hearts()
+
+        self.dead = False
+        self.create_hp_box(self.border)
+
+    def create_hearts(self):
+        self.red_heart = Red_Heart(self.rect, self.box, self.speed)
+        self.blue_heart = Blue_Heart(self.rect, self.box, self.speed)
+        self.current_heart = self.red_heart
+        self.image = self.current_heart.image
+
+    def create_hp_box(self, border: Rect):
+        self.MAX_HP = 92
+        self.HP = 92
+        self.max_hp_box = pygame.Surface((112, 30))
+        self.max_hp_box.fill('red')
+        self.hp_box = pygame.Surface((112, 30))
+        self.hp_box.fill('yellow')
+        self.max_hp_box_rect = self.max_hp_box.get_rect(
+            midtop=(border.centerx, border.bottom+15))
+        self.hp_box_rect = self.max_hp_box.get_rect(
+            topleft=self.max_hp_box_rect.topleft)
+
+    def update(self):
+        self.current_heart.update()
+
+    def take_damage(self):
+        self.HP -= 1
+        if self.HP <= 0:
+            self.lost()
+        else:
+            hp_percentage = self.HP / self.MAX_HP
+            new_size = (112*hp_percentage, 30)
+            self.hp_box = pygame.transform.scale(self.hp_box, new_size)
+
+    def draw_hp(self, screen: Surface):
+        screen.blit(self.max_hp_box, self.max_hp_box_rect)
+        screen.blit(self.hp_box, self.hp_box_rect)
+
+    def lost(self):
+        self.dead = True
+        print('You died!')
+        self.kill()
