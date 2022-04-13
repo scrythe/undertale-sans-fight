@@ -1,5 +1,5 @@
 import pygame
-from functions import scale_image
+from utils import scale_image
 
 
 class Heart(pygame.sprite.Sprite):

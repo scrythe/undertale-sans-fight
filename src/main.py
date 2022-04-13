@@ -1,7 +1,7 @@
 import pygame
-from Player import Heart
-from Bone import Bone
-from Battle_Box import Battle_Box
+from player import Heart
+from bone import Bone
+from battle_box import Battle_Box
 
 
 class Game:
