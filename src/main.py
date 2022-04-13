@@ -14,7 +14,7 @@ class Game:
             (self.TOTAL_WIDTH, self.TOTAL_HEIGHT))
         self.screen_rect = self.screen.get_rect()
         self.battle_Box = Battle_Box(self.screen_rect)
-        self.heart = Blue_Heart(self.battle_Box.get_box(),
+        self.heart = Read_Heart(self.battle_Box.get_box(),
                                 self.battle_Box.get_border())
         self.player = pygame.sprite.GroupSingle()
         self.player.add(self.heart)
