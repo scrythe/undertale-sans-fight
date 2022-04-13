@@ -112,7 +112,13 @@ class Player(pygame.sprite.Sprite):
     def create_hearts(self):
         self.red_heart = Red_Heart(self.rect, self.box, self.speed)
         self.blue_heart = Blue_Heart(self.rect, self.box, self.speed)
-        self.current_heart = self.blue_heart
+        self.change_heart("red_heart")
+
+    def change_heart(self, heart):
+        if heart == "red_heart":
+            self.current_heart = self.red_heart
+        elif heart == "blue_heart":
+            self.current_heart = self.blue_heart
         self.image = self.current_heart.image
 
     def update(self):

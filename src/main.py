@@ -44,8 +44,13 @@ class Game:
             if event.type == pygame.QUIT:
                 self.done = True
 
-            # if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            #     self.to_blue_heart()
+            # If space key is pressed, than heart is changed / for testing
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                heart_name = self.player.sprite.current_heart.__class__.__name__
+                if heart_name == "Blue_Heart":
+                    self.player.sprite.change_heart("red_heart")
+                elif heart_name == "Red_Heart":
+                    self.player.sprite.change_heart("blue_heart")
 
     def update(self):
         # check if heart collides with any groups
@@ -76,14 +81,6 @@ class Game:
     def collision(self):
         return pygame.sprite.spritecollide(
             self.player.sprite, self.bones_group, False, pygame.sprite.collide_mask)
-
-    # def to_blue_heart(self):
-    #     self.player.empty()
-    #     self.player.add(self.blue_heart)
-
-    # def to_red_heart(self):
-    #     self.player.empty()
-    #     self.player.add(self.red_heart)
 
 
 if __name__ == '__main__':
