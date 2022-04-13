@@ -1,5 +1,5 @@
 import pygame
-from player import Heart
+from player import Read_Heart, Blue_Heart
 from bone import Bone
 from battle_box import Battle_Box
 
@@ -14,8 +14,8 @@ class Game:
             (self.TOTAL_WIDTH, self.TOTAL_HEIGHT))
         self.screen_rect = self.screen.get_rect()
         self.battle_Box = Battle_Box(self.screen_rect)
-        self.heart = Heart(self.battle_Box.get_box(),
-                           self.battle_Box.get_border())
+        self.heart = Blue_Heart(self.battle_Box.get_box(),
+                                self.battle_Box.get_border())
         self.player = pygame.sprite.GroupSingle()
         self.player.add(self.heart)
         self.bone = Bone(self.battle_Box.get_box())
@@ -44,8 +44,7 @@ class Game:
     def update(self):
         # check if heart collides with any groups
         # and also other updates like movement
-        keys = pygame.key.get_pressed()
-        self.move(keys, self.heart)
+        self.heart.update()
         if not self.heart.dead and self.collision():
             self.heart.take_damage()
 
@@ -54,16 +53,6 @@ class Game:
         self.player.draw(self.screen)
         self.bones_group.draw(self.screen)
         self.heart.draw_hp(self.screen)
-
-    def move(self, keys, object):
-        if keys[pygame.K_w]:
-            object.move_upwards()
-        if keys[pygame.K_d]:
-            object.move_right()
-        if keys[pygame.K_s]:
-            object.move_downwards()
-        if keys[pygame.K_a]:
-            object.move_left()
 
     def collision(self):
         return pygame.sprite.spritecollide(
