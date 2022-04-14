@@ -52,7 +52,7 @@ class Game:
 
             # If press key up then bone wall attack appears / for testing
             if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-                self.bone_wall.attack_state = True
+                self.bone_wall.start_attack()
 
     def update(self):
         # check if heart collides with any groups
