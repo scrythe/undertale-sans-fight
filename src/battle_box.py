@@ -6,6 +6,7 @@ class Battle_Box:
         self.BATTLE_BOX_BORDER = pygame.Surface((250, 250))
         self.BATTLE_BOX_BORDER.fill("white")
         self.BATTLE_BOX = pygame.Surface((225, 225))
+        # self.BATTLE_BOX.fill("color")
         self.BATTLE_BOX_BORDER_RECT = self.BATTLE_BOX_BORDER.get_rect(
             midtop=screen_rect.center)
         self.BATTLE_BOX_RECT = self.BATTLE_BOX.get_rect(

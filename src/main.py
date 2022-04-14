@@ -1,6 +1,6 @@
 import pygame
 from player import Player
-from bone import Bone
+from bone import Bone, Bone_Wall
 from battle_box import Battle_Box
 from heart_box import Heart_Box
 
@@ -21,9 +21,7 @@ class Game:
         self.dead = False
         self.heart_box = Heart_Box(self.battle_Box.get_border())
         self.player = pygame.sprite.GroupSingle(self.heart)
-        self.bone = Bone(self.battle_Box.get_box())
-        self.bones_group = pygame.sprite.Group()
-        self.bones_group.add(self.bone)
+        self.bone_wall = Bone_Wall(self.battle_Box.get_box())
 
         self.done = False
         self.clock = pygame.time.Clock()
@@ -75,12 +73,12 @@ class Game:
     def draw(self):
         self.battle_Box.draw(self.screen)
         self.player.draw(self.screen)
-        self.bones_group.draw(self.screen)
+        self.bone_wall.draw(self.screen)
         self.heart_box.draw(self.screen)
 
     def collision(self):
         return pygame.sprite.spritecollide(
-            self.player.sprite, self.bones_group, False, pygame.sprite.collide_mask)
+            self.player.sprite, self.bone_wall.bone_group, False, pygame.sprite.collide_mask)
 
 
 if __name__ == '__main__':

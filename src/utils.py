@@ -6,6 +6,6 @@ def scale_image(img, factor):
     return pygame.transform.scale(img, size)
 
 
-def get_heart_img(img_path):
+def get_scaled_image(img_path):
     image = pygame.image.load(img_path).convert_alpha()
     return scale_image(image, 1.5)

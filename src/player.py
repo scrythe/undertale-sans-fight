@@ -1,5 +1,5 @@
 import pygame
-from utils import get_heart_img
+from utils import get_scaled_image
 from pygame import Rect
 
 
@@ -33,7 +33,7 @@ class Heart():
 class Red_Heart(Heart):
     def __init__(self, rect: Rect, box: Rect, speed):
         super().__init__(rect, box, speed)
-        self.image = get_heart_img('sprites/spr_heart.png')
+        self.image = get_scaled_image('sprites/spr_heart.png')
 
     def move_upwards(self):
         self.rect.y -= self.speed
@@ -56,7 +56,7 @@ class Red_Heart(Heart):
 class Blue_Heart(Heart):
     def __init__(self, rect: Rect, box: Rect, speed):
         super().__init__(rect, box, speed)
-        self.image = get_heart_img('sprites/spr_heartblue.png')
+        self.image = get_scaled_image('sprites/spr_heartblue.png')
         self.max_jump_height = self.box.bottom - self.box.centery
         self.jump_height = 0
         self.jumping = False
@@ -103,7 +103,7 @@ class Player(pygame.sprite.Sprite):
         self.border = border
         self.speed = 2
 
-        self.default_image = get_heart_img('sprites/spr_default_heart.png')
+        self.default_image = get_scaled_image('sprites/spr_default_heart.png')
         self.rect = self.default_image.get_rect(center=box.center)
         self.mask = pygame.mask.from_surface(self.default_image)
 
