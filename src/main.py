@@ -23,12 +23,6 @@ class Game:
         self.player = pygame.sprite.GroupSingle(self.heart)
         self.bone_wall = Bone_Wall(self.battle_Box.get_box())
 
-        self.under_border=pygame.Surface.copy(self.battle_Box.BATTLE_BOX_BORDER)
-        self.under_border.fill('black')
-        self.under_border_rect=self.under_border.get_rect(midtop=self.battle_Box.BATTLE_BOX_BORDER_RECT.midbottom)
-        self.BATTLE_BOX_BORDER = pygame.Surface((250, 250))
-        
-
         self.done = False
         self.clock = pygame.time.Clock()
 
@@ -63,6 +57,7 @@ class Game:
             self.player.sprite.update()
             if self.collision():
                 self.take_damage()
+        self.bone_wall.update()
 
     def take_damage(self):
         self.HP -= 1
@@ -80,7 +75,6 @@ class Game:
         self.battle_Box.draw(self.screen)
         self.player.draw(self.screen)
         self.bone_wall.draw(self.screen)
-        self.screen.blit(self.under_border,self.under_border_rect)
         self.heart_box.draw(self.screen)
 
     def collision(self):
