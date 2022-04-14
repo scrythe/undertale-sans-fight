@@ -1,6 +1,6 @@
 import pygame
 from player import Player
-from bone import Bone, Bone_Wall
+from bone_wall import Bone_Wall
 from battle_box import Battle_Box
 from heart_box import Heart_Box
 
@@ -49,6 +49,10 @@ class Game:
                     self.player.sprite.change_heart("red_heart")
                 elif heart_name == "Red_Heart":
                     self.player.sprite.change_heart("blue_heart")
+
+            # If press key up then bone wall attack appears / for testing
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+                self.bone_wall.attack()
 
     def update(self):
         # check if heart collides with any groups
