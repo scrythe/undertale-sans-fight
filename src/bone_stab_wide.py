@@ -1,5 +1,6 @@
 from pygame import Rect
-from bone import Bone_Group
+from bone import Bone_Group, Bone_Stab
+from typing import List
 
 
 class Bone_Stab_Wide(Bone_Group):
@@ -9,8 +10,19 @@ class Bone_Stab_Wide(Bone_Group):
         self.bone_group_width = self.battle_box.width
         self.max_height = self.battle_box.height / 3
         self.attack_speed = 8
-        super().create_bone_wall(self.amount_bones, self.bone_group_width)
+        self.create_bone_wall(self.amount_bones, self.bone_group_width)
         self.attack_state = False
+
+    def create_bone_wall(self, amount_bones, width):
+        steps = width / (amount_bones - 1)
+        default_rect = Bone_Stab().get_default_rect()
+        default_rect.midtop = self.battle_box.bottomleft
+        for index in range(amount_bones):
+            bone = Bone_Stab((default_rect.x, default_rect.y))
+            bone.create_rect_inside_surf(self.surface_rect)
+            self.bone_group.add(bone)
+            default_rect.x += steps
+        self.bone_group_sprites: List[Bone_Stab] = self.bone_group.sprites()
 
     def start_attack(self):
         self.attack_state = True

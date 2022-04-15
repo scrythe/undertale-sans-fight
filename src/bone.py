@@ -20,8 +20,8 @@ class Bone(pygame.sprite.Sprite):
 
     def create_rect_inside_surf(self, box: Rect):
         # Repositioned Rectangle inside a Surface
-        self.rect_in_box.x = self.rect.left - box.left
-        self.rect_in_box.y = self.rect.top - box.top
+        self.rect_in_box.left = self.rect.left - box.left
+        self.rect_in_box.top = self.rect.top - box.top
 
     def draw_onto_surf(self, screen: Surface):
         screen.blit(self.image, self.rect_in_box)
@@ -49,10 +49,10 @@ class Bone_Stab(Bone):
         super().__init__(image, coords)
 
 
-class Bone_Bul():
-    def __init__(self, box: Rect):
-        self.image = self.combine_bone_parts(100)
-        self.rect = self.image.get_rect(midtop=box.midtop)
+class Bone_Bul(Bone):
+    def __init__(self, height=100, coords=(0, 0)):
+        image = self.combine_bone_parts(height)
+        super().__init__(image, coords)
 
     def combine_bone_parts(self, height):
         bonetop = get_scaled_image('sprites/spr_s_bonebul_top.png')
@@ -96,16 +96,6 @@ class Bone_Group:
         self.surface.set_colorkey((0, 0, 0))
         self.surface_rect = self.surface.get_rect(
             topleft=self.battle_box.topleft)
-
-    def create_bone_wall(self, amount_bones, width):
-        steps = width / (amount_bones - 1)
-        default_rect = Bone_Stab().get_default_rect()
-        default_rect.midtop = (self.battle_box.left, self.battle_box.bottom)
-        for index in range(amount_bones):
-            bone = Bone_Stab((default_rect.x, default_rect.y))
-            bone.create_rect_inside_surf(self.surface_rect)
-            self.bone_group.add(bone)
-            default_rect.x += steps
         self.bone_group_sprites: List[Bone_Stab] = self.bone_group.sprites()
 
     def draw(self, screen: Surface):

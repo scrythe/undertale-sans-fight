@@ -1,8 +1,7 @@
 import pygame
 from player import Player
 from bone_stab_wide import Bone_Stab_Wide
-# for testing
-from bone import Bone_Bul
+from bone_wave import Bone_Wave
 from battle_box import Battle_Box
 from heart_box import Heart_Box
 
@@ -19,13 +18,12 @@ class Game:
         self.battle_Box = Battle_Box(self.screen_rect)
         self.heart = Player(self.battle_Box.get_box(),
                             self.battle_Box.get_border())
-        # for testing
-        self.bone_bul = Bone_Bul(self.battle_Box.get_box())
         self.HP = 92
         self.dead = False
         self.heart_box = Heart_Box(self.battle_Box.get_border())
         self.player = pygame.sprite.GroupSingle(self.heart)
         self.bone_wall = Bone_Stab_Wide(self.battle_Box.get_box())
+        self.bone_wave = Bone_Wave(self.battle_Box.get_box())
 
         self.done = False
         self.clock = pygame.time.Clock()
@@ -83,9 +81,8 @@ class Game:
         self.battle_Box.draw(self.screen)
         self.player.draw(self.screen)
         self.bone_wall.draw(self.screen)
+        self.bone_wave.draw(self.screen)
         self.heart_box.draw(self.screen)
-        # for testing
-        self.bone_bul.draw(self.screen)
 
     def collision(self):
         return pygame.sprite.spritecollide(
