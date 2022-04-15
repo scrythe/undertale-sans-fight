@@ -1,6 +1,5 @@
-from venv import create
 import pygame
-from utils import get_scaled_image
+from utils import get_scaled_image, change_height
 from pygame import Surface, Rect
 from typing import List
 
@@ -48,6 +47,42 @@ class Bone_Stab(Bone):
     def __init__(self, coords=(0, 0)):
         image = get_scaled_image('sprites/spr_s_bonestab_v.png')
         super().__init__(image, coords)
+
+
+class Bone_Bul():
+    def __init__(self, box: Rect):
+        self.image = self.combine_bone_parts(100)
+        self.rect = self.image.get_rect(midtop=box.midtop)
+
+    def combine_bone_parts(self, height):
+        bonetop = get_scaled_image('sprites/spr_s_bonebul_top.png')
+        bonemiddle = get_scaled_image('sprites/spr_s_bonebul_middle.png')
+        bonebottom = get_scaled_image('sprites/spr_s_bonebul_bottom.png')
+
+        bonemiddle_height = height - bonetop.get_height() - bonebottom.get_height()
+        bonemiddle = change_height(bonemiddle, bonemiddle_height)
+
+        width = bonemiddle.get_width()
+        combined_bone = pygame.Surface((width, height))
+        combined_bone.set_colorkey((0, 0, 0))
+        combined_bone_rect = combined_bone.get_rect()
+
+        bonetop_rect = bonetop.get_rect(
+            midtop=combined_bone_rect.midtop)
+        bonemiddle_rect = bonemiddle.get_rect(
+            center=combined_bone_rect.center)
+        bonebottom_rect = bonebottom.get_rect(
+            midbottom=combined_bone_rect.midbottom)
+
+        # put all bones onto combined bone surface
+        combined_bone.blit(bonetop, bonetop_rect)
+        combined_bone.blit(bonemiddle, bonemiddle_rect)
+        combined_bone.blit(bonebottom, bonebottom_rect)
+
+        return combined_bone
+
+    def draw(self, screen: Surface):
+        screen.blit(self.image, self.rect)
 
 
 class Bone_Group:
