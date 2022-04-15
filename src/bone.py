@@ -6,9 +6,9 @@ from typing import List
 
 
 class Bone(pygame.sprite.Sprite):
-    def __init__(self, coords=(0, 0)):
+    def __init__(self, surface, coords=(0, 0)):
         super().__init__()
-        self.image = get_scaled_image('sprites/spr_s_bonestab_v.png')
+        self.image = surface
         self.rect = self.image.get_rect(topleft=coords)
         self.mask = pygame.mask.from_surface(self.image)
         # Create a repositioned rect for drawing onto surface
@@ -44,6 +44,12 @@ class Bone(pygame.sprite.Sprite):
         self.rect_in_box.x -= amount
 
 
+class Bone_Stab(Bone):
+    def __init__(self, coords=(0, 0)):
+        image = get_scaled_image('sprites/spr_s_bonestab_v.png')
+        super().__init__(image, coords)
+
+
 class Bone_Group:
     def __init__(self, battle_box: Rect):
         self.bone_group = pygame.sprite.Group()
@@ -58,14 +64,14 @@ class Bone_Group:
 
     def create_bone_wall(self, amount_bones, width):
         steps = width / (amount_bones - 1)
-        default_rect = Bone().get_default_rect()
+        default_rect = Bone_Stab().get_default_rect()
         default_rect.midtop = (self.battle_box.left, self.battle_box.bottom)
         for index in range(amount_bones):
-            bone = Bone((default_rect.x, default_rect.y))
+            bone = Bone_Stab((default_rect.x, default_rect.y))
             bone.create_rect_inside_surf(self.surface_rect)
             self.bone_group.add(bone)
             default_rect.x += steps
-        self.bone_group_sprites: List[Bone] = self.bone_group.sprites()
+        self.bone_group_sprites: List[Bone_Stab] = self.bone_group.sprites()
 
     def draw(self, screen: Surface):
         screen.blit(self.surface, self.surface_rect)

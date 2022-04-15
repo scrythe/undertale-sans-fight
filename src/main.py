@@ -1,6 +1,6 @@
 import pygame
 from player import Player
-from bone_wall import Bone_Wall
+from bone_stab_wide import Bone_Stab_Wide
 from battle_box import Battle_Box
 from heart_box import Heart_Box
 
@@ -21,7 +21,7 @@ class Game:
         self.dead = False
         self.heart_box = Heart_Box(self.battle_Box.get_border())
         self.player = pygame.sprite.GroupSingle(self.heart)
-        self.bone_wall = Bone_Wall(self.battle_Box.get_box())
+        self.bone_wall = Bone_Stab_Wide(self.battle_Box.get_box())
 
         self.done = False
         self.clock = pygame.time.Clock()

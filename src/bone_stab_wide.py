@@ -2,7 +2,7 @@ from pygame import Rect
 from bone import Bone_Group
 
 
-class Bone_Wall(Bone_Group):
+class Bone_Stab_Wide(Bone_Group):
     def __init__(self, battle_box: Rect):
         super().__init__(battle_box)
         self.amount_bones = 14
