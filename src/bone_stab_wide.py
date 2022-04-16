@@ -1,4 +1,4 @@
-from pygame import Rect
+from pygame import Rect, sprite
 from bone import Bone_Group, Bone_Stab
 from typing import List
 
@@ -10,19 +10,10 @@ class Bone_Stab_Wide(Bone_Group):
         self.bone_group_width = self.battle_box.width
         self.max_height = self.battle_box.height / 3
         self.attack_speed = 8
-        self.create_bone_wall(self.amount_bones, self.bone_group_width)
-        self.attack_state = False
-
-    def create_bone_wall(self, amount_bones, width):
-        steps = width / (amount_bones - 1)
-        default_rect = Bone_Stab().get_default_rect()
-        default_rect.midtop = self.battle_box.bottomleft
-        for index in range(amount_bones):
-            bone = Bone_Stab((default_rect.x, default_rect.y))
-            bone.create_rect_inside_surf(self.surface_rect)
-            self.bone_group.add(bone)
-            default_rect.x += steps
+        self.bone_group = create_bone_wave(
+            self.amount_bones, self.bone_group_width, self.battle_box, self.surface_rect).bone_group
         self.bone_group_sprites: List[Bone_Stab] = self.bone_group.sprites()
+        self.attack_state = False
 
     def start_attack(self):
         self.attack_state = True
@@ -46,3 +37,21 @@ class Bone_Stab_Wide(Bone_Group):
 
     def update(self):
         self.attack()
+
+
+class create_bone_wave():
+    def __init__(self, amount_bones, width, battle_box: Rect, surface_rect: Rect):
+        self.bone_group: sprite.Group = self.__create_bone_wall(
+            amount_bones, width, battle_box, surface_rect)
+
+    def __create_bone_wall(self, amount_bones, width, battle_box: Rect, surface_rect: Rect):
+        bone_group = sprite.Group()
+        steps = width / (amount_bones - 1)
+        default_rect = Bone_Stab().get_default_rect()
+        default_rect.midtop = battle_box.bottomleft
+        for index in range(amount_bones):
+            bone = Bone_Stab((default_rect.x, default_rect.y))
+            bone.create_rect_inside_surf(surface_rect)
+            bone_group.add(bone)
+            default_rect.x += steps
+        return bone_group

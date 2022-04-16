@@ -87,7 +87,6 @@ class Bone_Bul(Bone):
 
 class Bone_Group:
     def __init__(self, battle_box: Rect):
-        self.bone_group = pygame.sprite.Group()
         # Surface with all the bones
         self.battle_box = battle_box
         # surface as big as battle box where bones will be drawn onto
@@ -96,7 +95,9 @@ class Bone_Group:
         self.surface.set_colorkey((0, 0, 0))
         self.surface_rect = self.surface.get_rect(
             topleft=self.battle_box.topleft)
-        self.bone_group_sprites: List[Bone_Stab] = self.bone_group.sprites()
+        self.define_bone_group = pygame.sprite.Group()
+        self.bone_group_sprites: List[Bone_Stab] = self.define_bone_group.sprites(
+        )
 
     def draw(self, screen: Surface):
         screen.blit(self.surface, self.surface_rect)
