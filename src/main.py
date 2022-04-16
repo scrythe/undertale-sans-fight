@@ -22,7 +22,8 @@ class Game:
         self.dead = False
         self.heart_box = Heart_Box(self.battle_Box.get_border())
         self.player = pygame.sprite.GroupSingle(self.heart)
-        self.bone_wall = Bone_Stab_Wide(self.battle_Box.get_box())
+        self.player_sprite: Player = self.player.sprite
+        self.bone_stab_wide = Bone_Stab_Wide(self.battle_Box.get_box())
         self.bone_wave = Bone_Wave(self.battle_Box.get_box())
 
         self.done = False
@@ -46,24 +47,29 @@ class Game:
 
             # If space key is pressed, than heart is changed / for testing
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                heart_name = self.player.sprite.current_heart.__class__.__name__
+                heart_name = self.player_sprite.current_heart.__class__.__name__
                 if heart_name == "Blue_Heart":
-                    self.player.sprite.change_heart("red_heart")
+                    self.player_sprite.change_heart("red_heart")
                 elif heart_name == "Red_Heart":
-                    self.player.sprite.change_heart("blue_heart")
+                    self.player_sprite.change_heart("blue_heart")
 
-            # If press key up then bone wall attack appears / for testing
+            # If press key up then bone stab wide attack appears / for testing
             if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-                self.bone_wall.start_attack()
+                self.bone_stab_wide.start_attack()
+
+            # If press key right then bone wave attack appears / for testing
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+                self.bone_wave.start_attack()
 
     def update(self):
         # check if heart collides with any groups
         # and also other updates like movement
         if not self.dead:
-            self.player.sprite.update()
+            self.player_sprite.update()
             if self.collision():
                 self.take_damage()
-        self.bone_wall.update()
+        self.bone_stab_wide.update()
+        self.bone_wave.update()
 
     def take_damage(self):
         self.HP -= 1
@@ -80,13 +86,15 @@ class Game:
     def draw(self):
         self.battle_Box.draw(self.screen)
         self.player.draw(self.screen)
-        self.bone_wall.draw(self.screen)
+        self.bone_stab_wide.draw(self.screen)
         self.bone_wave.draw(self.screen)
         self.heart_box.draw(self.screen)
 
     def collision(self):
-        return pygame.sprite.spritecollide(
-            self.player.sprite, self.bone_wall.bone_group, False, pygame.sprite.collide_mask)
+        bone_stab_hit = self.bone_stab_wide.check_if_hit(self.player_sprite)
+        bone_wave_hit = self.bone_wave.check_if_hit(self.player_sprite)
+        hit = bone_stab_hit or bone_wave_hit
+        return hit
 
 
 if __name__ == '__main__':

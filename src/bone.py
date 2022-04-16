@@ -11,7 +11,7 @@ class Bone(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=coords)
         self.mask = pygame.mask.from_surface(self.image)
         # Create a repositioned rect for drawing onto surface
-        self.rect_in_box = self.rect.copy()
+        self.rect_in_box: Rect = self.rect.copy()
         # box: Rect = pygame.Rect((0, 0), (0, 0))
         # self.create_rect_inside_surf(box)
 
@@ -32,7 +32,7 @@ class Bone(pygame.sprite.Sprite):
 
     def go_right(self, amount):
         self.rect.x += amount
-        self.rect_in_box.y += amount
+        self.rect_in_box.x += amount
 
     def go_downwards(self, amount):
         self.rect.y += amount
